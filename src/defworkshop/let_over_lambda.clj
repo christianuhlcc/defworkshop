@@ -32,10 +32,10 @@
 ;; To avoid confusion, we'll start with a simple function that returns a
 ;; function. A FunctionFactory if you like!
 
-(defn ^:not-implemented fn-in-fn
+(defn fn-in-fn
   "Write a function that returns a function that returns 42"
   []
-  (…))
+  (fn [] 42))
 
 ;; Now call it and get 42:
 
@@ -47,11 +47,11 @@
 ;; value. Sorry if this is getting repetitive, but it's better if you get the
 ;; exercise and avoid the confusion now than later.
 
-(defn ^:not-implemented apply-apply
+(defn apply-apply
   "Write a function that takes a function and calls the function, and then
   calls the resulting function"
   [f]
-  (…))
+  (( f)))
 
 ;; Having this, it should work:
 
@@ -64,11 +64,11 @@
 ;; what happens if you move 42 up one level? Let's put it in the outer
 ;; functions scope.
 
-(defn ^:not-implemented scoped-fn-in-fn
+(defn  scoped-fn-in-fn
   "Write a function that `let`s `42` to `fourtytwo` and returns a function
   which returns `fourtytwo`"
   []
-  (…))
+  (let [fourtytwo 42 ] (fn [] fourtytwo) ))
 
 ;; So, `let` opens a scope, and the `fn` is in a scope. See if it makes a
 ;; difference:
@@ -82,12 +82,12 @@
 ;;
 ;; We saw how the scoping works, as every function can see all the variables
 ;; that are defined "around" it. Now, how is this useful? A very common
-;; approach is to take an existing function, and preconfigure it.
-;;
+;; approach is to take an existing function, and preconfi multiply-by
+(defn multiply-by 
+[n]
+  (fn [b] (* n b))
 
-(defn ^:not-implemented multiply-by
-  [n]
-  …)
+)
 
 ;; So, we could build a function that just increments things:
 
@@ -128,8 +128,12 @@
   "Returns a function that increments the internal state everytime it is
   called"
   []
-  (…))
+  (
 
+   dosync ( alter (def counter (ref 0)) ( fn[a] (inc a ))
+   )
+  )
+)
 ; some code to try what we built
 (def ^:not-implemented my-counter …)
 

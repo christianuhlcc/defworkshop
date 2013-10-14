@@ -14,7 +14,7 @@
 ;; We will determine type of the message (and corresponding logger) based on `:type` key of the
 ;; message.
 
-(defmulti log (fn [_] (…)))
+(defmulti log :type)
 
 ;; If the type is `:init`, use string format of
 ;;
@@ -25,7 +25,8 @@
 ;;      {:type :init :from 1 :to 2}
 ;;
 (defmethod log :init [{from :from to :to}]
-  …)
+  (str "Host " from " initiating conversation with host " to)
+  )
 
 ;; If the type is `:message`, use string format of
 ;;
@@ -35,8 +36,8 @@
 ;;
 ;;      {:type :message :from 3 :to 4 :message "hello"}
 ;;
-(defmethod log :message [_]
-  (…))
+(defmethod log :message [{from :from to :to msg :message}]
+  (str "Host " from " to host " to ": " msg))
 
 ;; If the type is `:file`, use format of
 ;;
@@ -46,8 +47,9 @@
 ;;
 ;;      {:type :file :from 5 :to 6 :file {:name "image.jpg" :payload ""}}
 ;;
-(defmethod log :file [_]
-  (…))
+(defmethod log :file [{from :from to :to file :file}]
+  
+  (str "Host " from " sending " (:name file) " to host " to ))
 
 ;; If the type is `:end`, use format of
 ;;
@@ -57,8 +59,8 @@
 ;;
 ;;       {:type :end :from 7 :to 8}
 ;;
-(defmethod log :end [_]
-  (…))
+(defmethod log :end [{from :from to :to}]
+( str "Host " from " closed the conversation with host " to))
 
 ;; ## Bounded queue
 ;;
@@ -79,30 +81,30 @@
 
 ;; If the queue is `::full`, we should throw a Runtime exception saying that queue is full
 (defmethod enqueue ::full [_ _]
-  (…))
+  (.RuntimeException "queue is full"))
 
 ;; If the queue is not full, we should return a new queue with added element
 (defmethod enqueue :default [queue element]
-  (…))
+  (conj queue element))
 
 ;; Dequeue multimethod
 (defmulti dequeue queue-state)
 
 ;; If the queue is `::empty`, we should throw a RuntimeException saying that queue is empty
 (defmethod dequeue ::empty [_]
-  (…))
+  (.RuntimeException "is empty"))
 
 ;; Otherwise, we should dequeue element from it, by returning an array of the head (`first`)
 ;; element and the `rest` of elements.
 (defmethod dequeue :default [queue]
-  [(first queue) (…)])
+  [(first queue) (rest queue)])
 
 ;; ## Router
 ;; Router matches a given route and calls a corresponding handler, depending on which method
 ;; is called.
 
 ;; Route multimethod extracts
-(defmulti route (fn [_] (…)))
+(defmulti route (fn [request] [(:uri request ) (:method request)]))
 ;; Alternative implementation of the same method would look like
 ;;
 ;;     (defmulti route (fn [request]
@@ -184,7 +186,7 @@
   (->map   [beverage]))
 
 (defn ^:not-implemented serve [alcohol sugar carbs]
-  …)
+  42)
 
 (def water (serve 0.0 0.0 0.0))
 (def soda  (serve 0.0 0.5 0.1))
@@ -202,7 +204,7 @@
   (port [this])
   (app-name [this]))
 
-(defn ^:not-implemented configuration-from-env
+(defn configuration-from-env
   "Returns a version of `Configuration` that looks up `port` and `app-name` from ENV by using
    `env-param` (\"PORT\" for port and \"APP_NAME\" for app-name)"
   []
@@ -210,7 +212,7 @@
     (port [_] (env-param "PORT"))
     (app-name [_] (env-param "APP_NAME"))))
 
-(defn ^:not-implemented configuration-from-map [configuration]
+(defn configuration-from-map [configuration]
   "Returns a version of `Confirmation` that looks up `port` and `app-name` from the given
    `configuration` hash."
   (reify Configuration

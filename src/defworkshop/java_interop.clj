@@ -6,60 +6,65 @@
 ;; ## Obtaining Constant Values
 ;;
 
-(defn ^:not-implemented get-constant-value
+(defn get-constant-value
   "Write a function that returns Integer.MAX_VALUE"
   []
-  (…))
+  (Integer/MAX_VALUE))
 
 ;; ## Static calls
 ;;
 ;; It's also possible to call Java static methods from Clojure.
 ;;
-(defn ^:not-implemented static-method-call
+(defn static-method-call
   "Write a function that returns the result of System.getProperties()"
   []
-  (…))
-
-;; # Constructors
+  (System/getProperties)
+)
+  ;; # Constructors
 ;;
 ;; You can also call the constructor for Java class by calling it with `.`:
 ;;
 ;;     (Date. ...)
 ;;
-(defn ^:not-implemented mk-date
+(defn mk-date
   "Given year (offset 1900), month, day, hour minute and second, construct a new
    java.util.Date object."
   [year month day hour minute second]
-  (…))
+  (java.util.Date. year month day hour minute second))
 
 ;; # Method calls
 ;;
-(defn ^:not-implemented str-to-upper
+(defn str-to-upper
   "Given a String s, return an uppercase version."
   [s]
-  (…))
-
+  (.toUpperCase s)
+)
 (defn ^:not-implemented str-to-upper-with-typehint
   "Add a typehint to the previous function now. `s` can only be ^java.lang.String"
   [^java.lang.String s]
-  (…))
+  (.toUpperCase s))
 
-(defn ^:not-implemented str-to-upper-char
+(defn str-to-upper-char
   "given a String s, convert it to uppercase and return the first character."
   [s]
-  (…))
+  (.toUpperCase(.substring s 0 1)))
 
 (defn ^:not-implemented thread-info
   "given a Thread t, produce a string description as follows: '<id>-<name>:<alive>,<interrupted>'
 hint: use bean to access thread information."
   [^Thread t]
-  (…))
+  ())
 
-(defn ^:not-implemented add-elements!
+(defn add-elements!
   "given a java.util.Collection l, add the elements e1 e2 e3 and return the
   modified collection. hint: use the doto macro."
   [l e1 e2 e3]
-  (…))
+  (doto l  
+  (.add e1)
+  (.add e2)
+  (.add e3)   
+  )
+)
 
 ;; # Implemeting Interfaces and Abstract Classes
 ;;

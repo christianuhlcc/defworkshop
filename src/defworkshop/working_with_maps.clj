@@ -5,12 +5,12 @@
 ;; Maps
 ;;
 
-(defn ^:not-implemented get-name-or-empty
+(defn get-name-or-empty
   "Write a function that would retrieve a :name from map or return `:empty` token otherwise"
-  [m]
-  (…))
+  [m a]
+  (get m a :empty))
 
-(defn ^:not-implemented retrieve-city
+(defn retrieve-city
   "Given hash with following structure:
 
       {:name \"Alex\"
@@ -18,14 +18,14 @@
 
    Retrieve :city from the hash"
   [m]
-  (…))
+  (get (get m :address) :city))
 
-(defn ^:not-implemented get-by-path
+(defn get-by-path
   "Given a map of {:person {:name {:first-name \"Alex\" }}} return the `:first-name` key value.
 
    You can use `get-in` for that"
   [m]
-  (…))
+  (get-in :person :name :first-name))
 
 (defn ^:not-implemented add-name
   "Write a function that adds :name to the map by using `assoc`"
@@ -62,15 +62,15 @@
   [m]
   (…))
 
-(defn ^:not-implemented map-values
+(defn map-values
   "Given a map, return only it's values. You can use `vals` function for that."
   [m]
-  (…))
+  (vals m))
 
-(defn ^:not-implemented map-select
+(defn map-select
   "Given a map `m` and a vector of keys `ks`, return a map that only contains entries keyed by `ks`. hint: you can use `select-keys`."
   [m ks]
-  (…))
+  (select-keys m ks))
 
 (defn ^:not-implemented map-from-keys-and-vals
   "Construct a new map from keys and values. Hint: take a look at `zipmap`."
@@ -82,10 +82,10 @@
   [m k]
   (…))
 
-(defn ^:not-implemented map-merge
+(defn map-merge
   "given two maps `m1` and `m2`, merge them such that when there's identical keys in both maps, the value in `m1` will prevail in the merged map."
   [m1 m2]
-  (…))
+  (merge-with (fn [a b] a)))
 
 (defn ^:not-implemented merge-max
   "given two maps `m1` and `m2` (values are all numbers), merge them such that for identical keys, the larger value prevails. try to leverage `merge-with` in order to achieve this."

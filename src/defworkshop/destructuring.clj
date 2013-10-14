@@ -36,12 +36,12 @@
 ;; The first exercise is to write a function that takes an vector of three
 ;; elements and returns the the first and last element as a vector.
 
-(defn ^:not-implemented unpack
+(defn  unpack
   "Write a function which takes a vector containing first, middle
   and last name binds these to their own names and returns a vector of
   the first and last element"
-  [_]
-  (…))
+  [col]
+  (let [[a b c] col] [a c]))
 
 ;; Actually, there are cases where we don't need parts of the unpacked
 ;; collections. We didn't need the middle element. The convention then is to
@@ -64,17 +64,17 @@
 
 ;; You feel up for this? Alright, how about implementing `first` by yourself?
 
-(defn ^:not-implemented head
+(defn head
   "Implement head using destructuring."
-  [_]
-  (…))
+  [col]
+  (let [[a & _ ]col] a ))
 
 ;; While we're on a roll, have your take on `tail` as well!
 
-(defn ^:not-implemented tail
+(defn tail
   "Implement tail using destructuring."
-  [_]
-  (…))
+  [col]
+  (let [[ _ & tail] col] tail ))
 
 ;; So, we saw that we can destructure the whole data structure. But what if we
 ;; want to destructure the data structure and keep a reference to the
@@ -103,10 +103,12 @@
 ;; see all the concepts so far in action. For the multiplication, don't be
 ;; afraid to use `map`.
 
-(defn ^:not-implemented multiply-second
-  [_]
-  (…))
-
+(defn multiply-second
+  [col]
+  (let [[_ b & _ :as orig] col] 
+   ( map (fn[x] (* x b)) orig)
+  )
+)
 ;; As for a very last example of vector destructuring, let me tell you that
 ;; `for` also takes binding forms, so you could destructure in a `for` as well.
 ;; Here's a multiplication table:
@@ -121,8 +123,9 @@
 
 (defn ^:not-implemented multiplication-table
   "Take a vector of number pairs and returns a vector of multiplied results"
-  [_]
-  (…))
+  [a b]
+  (for [x a y  b] (* x y) )
+)
 
 ;; So, that was more of the same, you should be proficient now with
 ;; destructuring vector. In fact, you should be a master of destructuring

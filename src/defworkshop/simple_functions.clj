@@ -112,53 +112,57 @@
 ;; ## Simple Functions
 ;;
 
-(defn ^:not-implemented double-number
+(defn double-number
   "Write a function that returns a doubled number
 
       f(x) = x + x;"
   [x]
-  (…))
+  (+ x x))
 
 (comment
   (= 4 (double-number 2)))
 
-(defn ^:not-implemented square
+(defn  square
   "Write a function returns a square of a number"
   [x]
-  (…))
+  (* x x))
 
 (comment
   (= 16 (square 4)))
 
-(defn ^:not-implemented cube
+(defn cube
   "Write a function that returns a cube of a number"
   [x]
-  (…))
+  (* x x x))
 
 (comment
   (= 64 (cube 4)))
 
-(defn ^:not-implemented sum-of-numbers
+(defn sum-of-numbers
   "Write a multi-arity function for `sum-of-numbers`, for 2, 3 and 4 arguments"
   ([a b]
-     (…)))
+     (+ a b))
+  ([a b c]
+     (+ a b c))
+  ([a b c d]
+     (+ a b c d))
+)
 
 (comment
   (= 64 (cube 4)))
 
-(defn ^:not-implemented sum-of-numbers-in-vector
+(defn sum-of-numbers-in-vector
   "You can destructure arguments from vector by showing the shape of vector,
    for example vector `[1 2]` destructured to `[a b]` will assign `1` to `a` and `2` to `b`:
 
         [1 2]
         [a b]"
-  [_]
-  (…))
+  ([[a b]] (+ a b)))
 
 (comment
   (+ 7 (sum-of-numbers-in-vector [3 4])))
 
-(defn ^:not-implemented get-second
+(defn get-second
   "You can use & to indicate that the `rest` of elements should go to the argument,
    for example, destructuring `[1 2 3 4]` to `[a b & c]` will assign `1` to `a`, `2` to `b` and
    `(3, 4)` to `c`:
@@ -166,8 +170,8 @@
         [1  2    3 4]
         [a  b  &  c ]
       "
-  [_]
-  (…))
+  [[a b &c]]
+  (b))
 
 (comment
   (= 2 (get-second [1 2 3])))
